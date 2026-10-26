@@ -1,0 +1,2 @@
+#!/bin/sh
+uv run --directory "$(dirname "$0")"/patches/ 2-aal5-reassembly-overflow.py "$(realpath ./zephyr.elf)"

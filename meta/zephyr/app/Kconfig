@@ -1,0 +1,102 @@
+source "Kconfig.zephyr"
+
+config STRIP_APP_SYMBOLS
+    bool "Strip application symbols from zephyr.elf"
+    default y
+    help
+      Removes our own function and object names from the shipped zephyr.elf,
+      keeping Zephyr's, and leaves a copy with them intact in zephyr-debug.elf.
+      Our debug info is dropped from the final link either way.
+
+menu "ATM network devices"
+
+config ATM_LOG_LEVEL
+    int "Log level for ATM network devices"
+    default LOG_DEFAULT_LEVEL
+    range 0 4
+    help
+      Sets the log level for ATM network devices:
+      0: None
+      1: Error
+      2: Warning
+      3: Info
+      4: Debug
+
+config ATM_NETDEV_MSG_HEAP_SIZE
+    int "Size of the heap for ATM cells"
+    default 4194304
+
+config ATM_CIRCUIT_LIFETIME_SECONDS
+    int "Release accepted circuits after X seconds (0 disables)"
+    default 180
+    help
+      Bounds how long one call can hold a handler thread. A handler that stops
+      cooperating is not reclaimed by anything else.
+
+config ATM_HANDLER_ABORT_GRACE_MS
+    int "Grace period before a lingering handler thread is aborted"
+    default 1000
+    help
+      How long a handler gets to notice that its circuit is gone and exit on
+      its own before it is aborted.
+
+menu "Self-tests"
+
+config SELFTEST
+    bool
+    help
+      Runs self-tests instead of the main application
+
+config SELFTEST_LOG_LEVEL
+    int "Log level for selftests"
+    depends on SELFTEST
+    default 4
+    range 0 4
+    help
+      Sets the log level for the self-tests:
+      0: None
+      1: Error
+      2: Warning
+      3: Info
+      4: Debug
+
+config SELFTEST_ATM_NETDEV
+    bool "Run network device self-test"
+    default no
+    select SELFTEST
+
+endmenu
+
+endmenu
+
+menu "OAM"
+
+config OAM_STORAGE_ROOT
+    string "OAM storage root"
+    default "/disk0:/oam"
+    help
+      Storage root for OAM F5 management commands
+
+config OAM_STORAGE_ROTATION_MS
+    int "Rotate OAM storage at least every X milliseconds"
+    default 60000
+
+config OAM_LIVE_GENERATIONS
+    int "Number of rotations that OAM storage should persist"
+    default 32
+    help
+      Choose a number high enough to cover the flag lifetime plus extra generations from rebooting.
+      Must be a power of two.
+
+config OAM_SLOTS_PER_GENERATION
+    int "Number of slots per OAM storage generation"
+    default 16384
+    help
+      Choose a number high enough to cover the expected number of stores per round.
+      Must be a power of two.
+
+config OAM_RECORD_SIZE
+    int "Bytes per OAM storage record"
+    default 64
+
+endmenu

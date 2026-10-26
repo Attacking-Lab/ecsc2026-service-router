@@ -1,0 +1,20 @@
+set shell := ["bash", "-euo", "pipefail", "-c"]
+
+toolchain_image := "ecsc2026-service-router/zephyr-toolchain:latest"
+
+default:
+    @just --list
+
+# Build the service-independent Zephyr toolchain image (Ubuntu + west + xtensa SDK)
+[group('toolchain')]
+toolchain-image-build:
+    docker build -f zephyr/Dockerfile --target toolchain -t {{ toolchain_image }} zephyr
+
+# Push the toolchain image to the registry
+[group('toolchain')]
+toolchain-image-push:
+    docker push {{ toolchain_image }}
+
+# Build then push the toolchain image
+[group('toolchain')]
+toolchain-image: toolchain-image-build toolchain-image-push

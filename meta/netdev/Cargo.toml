@@ -1,0 +1,19 @@
+[package]
+name = "netdev"
+description = "This is a PCI device that acts as a DSL network card and connects the service to the gamenet. Don't go looking for things in here."
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+bitfield = "0.19.4"
+clap = { version = "4.6.0", features = ["derive"] }
+memmap2 = "0.9.10"
+nix = "0.31.2"
+socket2 = { version = "0.6.3", features = ["all"] }
+thiserror = "2.0.18"
+tokio = { version = "1.50.0", features = ["full"] }
+tokio-util = "0.7.18"
+tracing = "0.1.44"
+tracing-subscriber = "0.3.23"
+vfio-bindings = "0.6.1"
+vfio_user = "0.1.2"

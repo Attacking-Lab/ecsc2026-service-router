@@ -1,0 +1,4 @@
+tools/brute_force
+**/__pycache__
+.venv
+.ruff_cache

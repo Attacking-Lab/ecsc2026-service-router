@@ -1,0 +1,204 @@
+Router
+Copyright (c) 2026 Attacking-Lab
+
+This product includes third-party software distributed under its own licence.
+The components are grouped by the part of the project that uses them, and
+licence identifiers follow the SPDX format (https://spdx.org/licenses/).
+
+Two things this artifact publishes carry third-party code: the `netdev` helper
+binary (Rust) and the `zephyr.elf` firmware (Zephyr RTOS for the Xtensa/QEMU
+board). The Python in `mindslam/` and `patmy/`, and the generated
+`base-disk.img`, are first-party.
+
+
+================================================================================
+service/netdev - Rust dependencies
+================================================================================
+
+netdev 0.1.0 is first-party (MIT; see the repository's LICENSE). Its third-party
+dependencies are:
+
+  anstream 1.0.0                      MIT OR Apache-2.0
+  anstyle 1.0.14                      MIT OR Apache-2.0
+  anstyle-parse 1.0.0                 MIT OR Apache-2.0
+  anstyle-query 1.1.5                 MIT OR Apache-2.0
+  anstyle-wincon 3.0.11               MIT OR Apache-2.0
+  arc-swap 1.9.0                      MIT OR Apache-2.0
+  bitfield 0.19.4                     MIT OR Apache-2.0
+  bitfield-macros 0.19.4              MIT OR Apache-2.0
+  bitflags 1.3.2                      MIT/Apache-2.0
+  bitflags 2.11.0                     MIT OR Apache-2.0
+  bytes 1.11.1                        MIT
+  cfg-if 1.0.4                        MIT OR Apache-2.0
+  cfg_aliases 0.2.1                   MIT
+  clap 4.6.0                          MIT OR Apache-2.0
+  clap_builder 4.6.0                  MIT OR Apache-2.0
+  clap_derive 4.6.0                   MIT OR Apache-2.0
+  clap_lex 1.1.0                      MIT OR Apache-2.0
+  colorchoice 1.0.5                   MIT OR Apache-2.0
+  errno 0.3.14                        MIT OR Apache-2.0
+  futures-core 0.3.32                 MIT OR Apache-2.0
+  futures-sink 0.3.32                 MIT OR Apache-2.0
+  heck 0.5.0                          MIT OR Apache-2.0
+  is_terminal_polyfill 1.70.2         MIT OR Apache-2.0
+  itoa 1.0.18                         MIT OR Apache-2.0
+  lazy_static 1.5.0                   MIT OR Apache-2.0
+  libc 0.2.183                        MIT OR Apache-2.0
+  lock_api 0.4.14                     MIT OR Apache-2.0
+  log 0.4.29                          MIT OR Apache-2.0
+  memchr 2.8.0                        Unlicense OR MIT
+  memmap2 0.9.10                      MIT OR Apache-2.0
+  mio 1.1.1                           MIT
+  nix 0.31.2                          MIT
+  nu-ansi-term 0.50.3                 MIT
+  once_cell 1.21.4                    MIT OR Apache-2.0
+  once_cell_polyfill 1.70.2           MIT OR Apache-2.0
+  parking_lot 0.12.5                  MIT OR Apache-2.0
+  parking_lot_core 0.9.12             MIT OR Apache-2.0
+  pin-project-lite 0.2.17             Apache-2.0 OR MIT
+  proc-macro2 1.0.106                 MIT OR Apache-2.0
+  quote 1.0.45                        MIT OR Apache-2.0
+  redox_syscall 0.5.18                MIT
+  rustversion 1.0.22                  MIT OR Apache-2.0
+  scopeguard 1.2.0                    MIT OR Apache-2.0
+  serde 1.0.228                       MIT OR Apache-2.0
+  serde_core 1.0.228                  MIT OR Apache-2.0
+  serde_derive 1.0.228                MIT OR Apache-2.0
+  serde_json 1.0.149                  MIT OR Apache-2.0
+  sharded-slab 0.1.7                  MIT
+  signal-hook-registry 1.4.8          MIT OR Apache-2.0
+  smallvec 1.15.1                     MIT OR Apache-2.0
+  socket2 0.6.3                       MIT OR Apache-2.0
+  strsim 0.11.1                       MIT
+  syn 2.0.117                         MIT OR Apache-2.0
+  thiserror 1.0.69                    MIT OR Apache-2.0
+  thiserror 2.0.18                    MIT OR Apache-2.0
+  thiserror-impl 1.0.69               MIT OR Apache-2.0
+  thiserror-impl 2.0.18               MIT OR Apache-2.0
+  thread_local 1.1.9                  MIT OR Apache-2.0
+  tokio 1.50.0                        MIT
+  tokio-macros 2.6.1                  MIT
+  tokio-util 0.7.18                   MIT
+  tracing 0.1.44                      MIT
+  tracing-attributes 0.1.31           MIT
+  tracing-core 0.1.36                 MIT
+  tracing-log 0.2.0                   MIT
+  tracing-subscriber 0.3.23           MIT
+  unicode-ident 1.0.24                (MIT OR Apache-2.0) AND Unicode-3.0
+  utf8parse 0.2.2                     Apache-2.0 OR MIT
+  valuable 0.1.1                      MIT
+  vfio-bindings 0.6.1                 Apache-2.0 OR BSD-3-Clause
+  vfio_user 0.1.2                     Apache-2.0
+  vm-memory 0.16.2                    Apache-2.0 OR BSD-3-Clause
+  vmm-sys-util 0.15.0                 BSD-3-Clause
+  wasi 0.11.1+wasi-snapshot-preview1  Apache-2.0 WITH LLVM-exception OR Apache-2.0 OR MIT
+  winapi 0.3.9                        MIT/Apache-2.0
+  winapi-i686-pc-windows-gnu 0.4.0    MIT/Apache-2.0
+  winapi-x86_64-pc-windows-gnu 0.4.0  MIT/Apache-2.0
+  windows-link 0.2.1                  MIT OR Apache-2.0
+  windows-sys 0.61.2                  MIT OR Apache-2.0
+  zmij 1.0.21                         MIT
+
+================================================================================
+service/zephyr.elf - Zephyr firmware
+================================================================================
+
+The firmware links the Zephyr RTOS and the modules named in the application's
+west manifest (`name-allowlist`):
+
+Zephyr RTOS
+  Licence:   Apache-2.0
+  Copyright: (c) The Zephyr Project contributors
+  Source:    https://github.com/zephyrproject-rtos/zephyr
+
+FatFs (ELM FatFs, R0.16)
+  Licence:   Permissive, notice-retention (text below)
+  Copyright: (c) 2025, ChaN, all rights reserved
+  Source:    https://github.com/zephyrproject-rtos/fatfs  (Zephyr module)
+             https://elm-chan.org/fsw/ff/                   (upstream)
+
+mbedTLS
+  Licence:   Apache-2.0 OR GPL-2.0-or-later - used here under Apache-2.0
+  Copyright: (c) The Mbed TLS Contributors
+  Source:    https://github.com/zephyrproject-rtos/mbedtls
+
+Xtensa HAL
+  Licence:   MIT
+  Copyright: (c) 1999-2014 Cadence Design Systems, Inc.;
+             (c) 2014-2015 Tommie Gannert (build scaffolding)
+  Source:    https://github.com/zephyrproject-rtos/hal_xtensa
+
+Zephyr additionally bundles further third-party components (its C library, and
+per-subsystem code); Zephyr's own inventory is authoritative:
+  https://github.com/zephyrproject-rtos/zephyr/blob/main/LICENSING.rst
+
+
+================================================================================
+Full licence texts
+================================================================================
+
+Apache-2.0                      https://www.apache.org/licenses/LICENSE-2.0
+Apache-2.0 WITH LLVM-exception  https://llvm.org/LICENSE.txt
+BSD-3-Clause                    https://opensource.org/license/bsd-3-clause
+GPL-2.0-or-later                https://www.gnu.org/licenses/old-licenses/gpl-2.0.html
+MIT                             https://opensource.org/license/mit
+Unicode-3.0                     https://www.unicode.org/license.txt
+Unlicense                       https://unlicense.org
+
+FatFs (c) 2025, ChaN, all rights reserved:
+
+  FatFs module is an open source software. Redistribution and use of FatFs in
+  source and binary forms, with or without modification, are permitted
+  provided that the following condition is met:
+
+  1. Redistributions of source code must retain the above copyright notice,
+     this condition and the following disclaimer.
+
+  This software is provided by the copyright holder and contributors "AS IS"
+  and any warranties related to this software are DISCLAIMED.
+  The copyright owner or contributors be NOT LIABLE for any damages caused by
+  use of this software.
+
+Xtensa HAL (MIT):
+
+  Copyright (c) 1999-2014 Cadence Design Systems, Inc.
+  Copyright (c) 2014-2015 Tommie Gannert (build scaffolding)
+
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+
+  The above copyright notice and this permission notice shall be included in
+  all copies or substantial portions of the Software.
+
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  SOFTWARE.
+
+
+================================================================================
+Build-time components (installed by the image build, not redistributed here)
+================================================================================
+
+Ubuntu 26.04 base image
+  Licence:   Free software, multiple licences
+  Source:    https://ubuntu.com/legal
+
+qemu-system-misc
+  Licence:   GPL-2.0-only (QEMU)
+  Source:    https://www.qemu.org/
+
+Zephyr SDK 0.17.4 (xtensa-dc233c_zephyr-elf toolchain)
+  Licence:   Apache-2.0, plus per-toolchain components
+  Source:    https://github.com/zephyrproject-rtos/sdk-ng
+
+west and Zephyr's Python build requirements
+  Licence:   Apache-2.0 (west) and per-package licences
+  Source:    https://github.com/zephyrproject-rtos/west

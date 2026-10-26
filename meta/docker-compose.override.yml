@@ -1,0 +1,61 @@
+# This is a compose override that you symlink to
+# service/docker-compose.override.yml during development so you
+# can conveniently rebuild everything from one place
+
+include:
+  - ../meta/docker-compose.build.yml
+
+services:
+  router:
+    # Never pull the locally built image. This must *not* live in
+    # service/docker-compose.yml: the CI packaging step rewrites the image
+    # there to a digest-pinned registry reference, and `pull_policy: never`
+    # would then stop the test step from pulling it ("No such image: ...").
+    pull_policy: never
+    # Wait for the build container's build to finish.
+    # See https://docs.docker.com/compose/how-tos/dependent-images/
+    # The firewall dockerfile will then pull the agent binary directly
+    # from the builder image
+    build:
+      args:
+        ZEPHYR_SOURCE: ecsc2026-service-router/zephyr-build
+        NETDEV_SOURCE: ecsc2026-service-router/netdev-build
+      additional_contexts:
+        ecsc2026-service-router/zephyr-build: "service:zephyr-build"
+        ecsc2026-service-router/netdev-build: "service:netdev-build"
+    depends_on:
+      - dslam
+    # Static address so the DSLAM always sees the router arrive from the
+    # address the numbering plan has a fixed number for. Without this the
+    # router gets a random address, is assigned a *dynamic* number, and the
+    # checker can never find it.
+    networks:
+      default:
+        ipv4_address: 172.28.5.11
+
+  # runtime container for the dslam in testing
+  dslam:
+    image: ecsc2026-service-router/dslam
+    pull_policy: never
+    container_name: router-dslam
+    build:
+      context: ../meta/dslam/
+    volumes:
+      - type: bind
+        read_only: true
+        source: ../meta/dslam/numbering-plan.yaml
+        target: /dslam/numbering-plan.yaml
+    environment:
+      RUST_LOG: info
+    networks:
+      default:
+        ipv4_address: 172.28.5.10
+
+networks:
+  default:
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.28.0.0/16
+          ip_range: 172.28.5.0/24
+          gateway: 172.28.5.254

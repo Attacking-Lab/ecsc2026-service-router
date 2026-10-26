@@ -1,0 +1,30 @@
+name: router
+
+services:
+  router:
+    image: ecsc2026-service-router/router
+    build:
+      context: .
+    container_name: router-router
+    restart: unless-stopped
+    user: "nobody:nogroup"
+    cap_drop: [ALL]
+    security_opt: ["no-new-privileges=true"]
+    tmpfs: ["/tmp"]
+    networks:
+      - router
+    volumes:
+      - type: volume
+        source: state
+        target: /disk/
+    environment:
+      DISK: /disk/atmlab-disk.img
+      DSLAM_ADDRESS: ${DSLAM_ADDRESS:-dslam:9000}
+
+networks:
+  router:
+    name: router
+
+volumes:
+  state:
+    name: "router-state"

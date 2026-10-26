@@ -1,0 +1,9 @@
+description: ATMLAB PCI network device
+
+compatible: "atmlab,netdev"
+
+include: [base.yaml, pcie-device.yaml]
+
+properties:
+  interrupts:
+    required: true

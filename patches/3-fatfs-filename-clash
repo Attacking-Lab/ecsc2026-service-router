@@ -1,0 +1,2 @@
+#!/bin/sh
+uv run --directory "$(dirname "$0")"/patches/ 3-fatfs-filename-clash.py "$(realpath ./zephyr.elf)"

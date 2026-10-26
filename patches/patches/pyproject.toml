@@ -1,0 +1,9 @@
+[project]
+name = "patches"
+version = "0.1.0"
+description = "Patch scripts for the router service"
+requires-python = ">=3.12"
+dependencies = [
+    "capstone>=6.0.0a10",
+    "pyelftools>=0.33",
+]

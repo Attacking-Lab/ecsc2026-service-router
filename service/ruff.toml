@@ -1,0 +1,11 @@
+line-length = 120
+
+[format]
+quote-style = "double"
+
+[lint]
+extend-select = [
+    "B",
+    "I",
+    "UP",
+]

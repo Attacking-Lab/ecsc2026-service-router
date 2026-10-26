@@ -1,0 +1,2 @@
+#!/bin/sh
+uv run --directory "$(dirname "$0")"/patches/ 4-coap-if-match-auth-bypass.py "$(realpath ./zephyr.elf)"

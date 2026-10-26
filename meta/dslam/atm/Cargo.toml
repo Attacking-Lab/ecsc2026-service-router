@@ -1,0 +1,13 @@
+[package]
+name = "atm"
+description = "Packet parsing and crafting for ATM and higher-level protocols"
+version = "0.1.0"
+edition = "2024"
+
+[features]
+std = []
+default = ["std"]
+
+[dependencies]
+bitfield = "0.19.4"
+crc = "3.4.0"

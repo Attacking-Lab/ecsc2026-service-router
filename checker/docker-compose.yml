@@ -1,0 +1,58 @@
+name: router-checker
+
+services:
+  checker:
+    build:
+      context: .
+    ports:
+      - "${CHECKER_PORT:-8000}:8000"
+    environment:
+      - MONGO_ENABLED=1
+      - MONGO_HOST=mongo
+      - MONGO_PORT=27017
+      - MONGO_USER=mongo
+      - MONGO_PASSWORD=mongo
+      - DSLAM_HOST=${DSLAM_HOST:-dslam}
+      - DSLAM_PORT=${DSLAM_PORT:-9000}
+      - DSLAM_CONFIG_PORT=${DSLAM_CONFIG_PORT:-80}
+      - OTEL_EXPORTER_OTLP_ENDPOINT=${OTEL_EXPORTER_OTLP_ENDPOINT:-}
+      - ENOCHECKER_HAPROXY_MODE=${ENOCHECKER_HAPROXY_MODE:-0}
+    restart: unless-stopped
+    depends_on:
+      mongo:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "python3", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/service')"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+      start_period: 5s
+
+  mongo:
+    image: mongo
+    volumes:
+      - mongodb:/data/db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: mongo
+      MONGO_INITDB_ROOT_PASSWORD: mongo
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "mongosh", "--quiet", "--eval", "db.adminCommand('ping').ok"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+      start_period: 5s
+
+volumes:
+  mongodb:
+
+networks:
+  default:
+    name: router-checker
+    # The checker reaches the DSLAM over this network, and the DSLAM only holds
+    # circuits back for callers it recognises as the checker (10.X.249.0/24 by
+    # default, see --checker-mask/--checker-pattern). game/'s compose declares
+    # this network identically, so either project can create it.
+    ipam:
+      config:
+        - subnet: 10.0.249.0/24

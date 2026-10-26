@@ -1,0 +1,49 @@
+random:
+  prefix: "+49 14 3272"
+  length: 14
+
+fixed:
+  # @ infra: key this as "<team vulnbox ip>"
+  "<NOP>": "+49 12 667" # NOP
+  "<Team Albania>": "+355 41 2522642" # Albania
+  "<Team Austria>": "+43 10 287874 2" # Austria
+  "<Team Belgium>": "+32 20 2354486" # Belgium
+  "<Team Bulgaria>": "+359 50 28542742" # Bulgaria
+  "<Team Croatia>": "+385 24 2762842" # Croatia
+  "<Team Cyprus>": "+357 21 297787" # Cyprus
+  "<Team Czechia>": "+420 45 2932442" # Czechia
+  "<Team Denmark>": "+45 1 3366275" # Denmark
+  "<Team Estonia>": "+372 31 33784" # Estonia
+  "<Team Finland>": "+358 99 3465263" # Finland
+  "<Team France>": "+33 400 372623" # France
+  "<Team Germany>": "+49 12 4376269" # Germany
+  "<Team Greece>": "+30 2000 473323" # Greece
+  "<Team Hungary>": "+36 39 4864279" # Hungary
+  "<Team Iceland>": "+354 4 475263" # Iceland
+  "<Team Ireland>": "+353 20 4735263" # Ireland
+  "<Team Italy>": "+39 084 48259" # Italy
+  "<Team Latvia>": "+371 60 528842" # Latvia
+  "<Team Lithuania>": "+370 5 5438882" # Lithuania
+  "<Team Luxembourg>": "+352 21 589362874" # Luxembourg
+  "<Team Netherlands>": "+31 21 633375263" # Netherlands
+  "<Team Norway>": "+47 60 667929" # Norway
+  "<Team Poland>": "+48 270 765263" # Poland
+  "<Team Portugal>": "+351 20 76788425" # Portugal
+  "<Team Romania>": "+40 29 7662642" # Romania
+  "<Team Serbia>": "+381 110 737242" # Serbia
+  "<Team Slovakia>": "+421 20 75682542" # Slovakia
+  "<Team Slovenia>": "+386 10 75683642" # Slovenia
+  "<Team Spain>": "+34 9900 77246" # Spain
+  "<Team Sweden>": "+46 145 793336" # Sweden
+  "<Team Switzerland>": "+41 29 43583842" # Switzerland
+  "<Team Ukraine>": "+380 49 8572463" # Ukraine
+  "<Team United Kingdom>": "+44 163 2748246" # United Kingdom
+  "<Team Australia>": "+61 2 287872542" # Australia
+  "<Team Canada>": "+1 555 2262320" # Canada
+  "<Team Costa Rica>": "+506 23 267827" # Costa Rica
+  "<Team Kosovo>": "+383 37 567686" # Kosovo
+  "<Team USA>": "+1 555 8326872" # USA
+  "<Team Armenia>": "+374 19 2763642" # Armenia
+  "<Team Malta>": "+356 240 62582" # Malta
+  "<Team Singapore>": "+65 746427673" # Singapore
+  "<Team Liechtenstein>": "+423 25 35" # Liechtenstein

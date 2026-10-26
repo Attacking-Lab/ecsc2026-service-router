@@ -1,0 +1,7 @@
+base-disk.img
+docker-compose.override.yml
+netdev
+patmy/
+__pycache__/
+.ruff_cache/
+zephyr.elf

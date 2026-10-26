@@ -1,0 +1,87 @@
+name: router-game
+
+# The components that live in the game network: the central DSLAM every team's
+# router dials through, plus what the game network provides around it. In the
+# final deployment infra runs the DSLAM against the real numbering plan (see
+# meta/dslam/numbering-plan.yaml.template) and k8s serves that plan to the
+# checker; init and dslam-config stand in for those two here.
+services:
+  init:
+    image: ecsc2026-service-router/game-init
+    build:
+      context: init
+    volumes:
+      - plan:/plan
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    networks:
+      - router
+
+  dslam:
+    image: ecsc2026-service-router/dslam:latest
+    hostname: dslam
+    command: ["dslam", "0.0.0.0:9000", "/plan/numbering-plan.yaml"]
+    restart: unless-stopped
+    depends_on:
+      init:
+        condition: service_completed_successfully
+    volumes:
+      - plan:/plan
+      - ./debug:/debug
+    environment:
+      # Connection and call records for the traffic analysis tooling, as JSON
+      # lines (see meta/dslam/debug-log.md). In the real deployment infra mounts
+      # the volume and sizes the budget; a game's worth is a few GB, and the
+      # oldest segments go once a run is over it.
+      DSLAM_DEBUG_LOG_DIR: /debug
+      DSLAM_DEBUG_LOG_BUDGET: 1G
+    networks:
+      - default
+      - router
+
+  dslam-config:
+    # Sidecar to serve the numbering plan to the checker
+    # (normally, k8s does this for us)
+    image: nginx:latest
+    restart: unless-stopped
+    network_mode: "service:dslam"
+    depends_on:
+      init:
+        condition: service_completed_successfully
+    configs:
+      - source: dslam-nginx-default
+        target: /etc/nginx/conf.d/default.conf
+    volumes:
+      - plan:/plan
+
+volumes:
+  plan:
+
+configs:
+  dslam-nginx-default:
+    content: |
+      server {
+        listen 80;
+        server_name dslam;
+        location / {
+          root /plan;
+          try_files /numbering-plan.yaml =404;
+        }
+      }
+
+networks:
+  default:
+    name: router-checker
+    # The checker reaches the DSLAM over this network, and the DSLAM only holds
+    # circuits back for callers it recognises as the checker (10.X.249.0/24 by
+    # default, see --checker-mask/--checker-pattern). The checker's own compose
+    # declares this network identically, so either project can create it.
+    ipam:
+      config:
+        - subnet: 10.0.249.0/24
+
+  router:
+    # The service network, so the DSLAM can reach the router and init can
+    # enumerate the addresses a router may show up on. Declared in service/'s
+    # compose too; whichever project starts first creates it.
+    name: router

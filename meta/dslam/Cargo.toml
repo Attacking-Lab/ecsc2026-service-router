@@ -1,0 +1,35 @@
+[package]
+name = "dslam"
+description = "An ATM-based ADSL DSLAM implementation, proxying ATM traffic through TCP"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+atm = { path = "atm" }
+bitfield = "0.19.4"
+clap = { version = "4.6.0", features = ["derive", "env"] }
+evmap = "11.0.0"
+flate2 = "1.1.10"
+opentelemetry = { version = "0.31.0", features = ["logs"], optional = true }
+opentelemetry-appender-tracing = { version = "0.31.1", optional = true }
+opentelemetry-otlp = { version = "0.31.1", features = ["grpc-tonic", "tls-roots"], optional = true }
+opentelemetry_sdk = { version = "0.31.0", features = ["logs", "rt-tokio"], optional = true }
+pcap-file = { version = "2.0.0" }
+rand = "0.10.0"
+serde = { version = "1.0.228", features = ["derive"] }
+serde_json = "1.0.149"
+serde_norway = "0.9.42"
+serde_with = "3.18.0"
+socket2 = { version = "0.6.5", features = ["all"] }
+thiserror = "2.0.18"
+tokio = { version = "1.50.0", features = ["full"] }
+tokio-util = { version = "0.7.18", features = ["time"] }
+tracing = "0.1.44"
+tracing-subscriber = { version = "0.3.23", features = ["env-filter", "fmt"] }
+
+[dev-dependencies]
+tokio = { version = "1.50.0", features = ["full", "test-util"] }
+
+[features]
+default = ["opentelemetry"]
+opentelemetry = ["dep:opentelemetry", "dep:opentelemetry-appender-tracing", "dep:opentelemetry-otlp", "dep:opentelemetry_sdk"]

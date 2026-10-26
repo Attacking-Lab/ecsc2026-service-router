@@ -1,0 +1,17 @@
+# Copyright (c) 2021 Nordic Semiconductor ASA
+# SPDX-License-Identifier: Apache-2.0
+
+manifest:
+  remotes:
+    - name: zephyrproject-rtos
+      url-base: https://github.com/zephyrproject-rtos
+
+  projects:
+    - name: zephyr
+      url: https://github.com/Attacking-Lab/ecsc2026-service-router-zephyr
+      revision: main
+      import:
+        name-allowlist:
+          - fatfs
+          - hal_xtensa
+          - mbedtls

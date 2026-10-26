@@ -1,0 +1,39 @@
+services:
+  # This service builds the binary and is NOT given to players
+  zephyr-build:
+    image: ecsc2026-service-router/zephyr-build
+    pull_policy: never
+    container_name: router-zephyr-build
+    network_mode: none
+    build:
+      context: zephyr
+      args:
+        TOOLCHAIN_IMAGE: ${TOOLCHAIN_IMAGE:-toolchain}
+      secrets:
+        - ZEPHYR_DEPLOY
+        - ATKGIT_HOSTKEY
+    volumes:
+      - type: bind
+        source: ${SERVICE_DIRECTORY:-../service}
+        target: /service/
+    # Copy the final binary into the service directory
+    command: /bin/cp /zephyr.elf /base-disk.img /service/
+  netdev-build:
+    image: ecsc2026-service-router/netdev-build
+    pull_policy: never
+    container_name: router-netdev-build
+    network_mode: none
+    build:
+      context: netdev
+    volumes:
+      - type: bind
+        source: ${SERVICE_DIRECTORY:-../service}
+        target: /service/
+    # Copy the final binary into the service directory
+    command: /bin/cp /netdev /service/
+
+secrets:
+  ZEPHYR_DEPLOY:
+    file: ./zephyr/zephyr-deploy-key
+  ATKGIT_HOSTKEY:
+    file: ./zephyr/atkgit-hostkey
